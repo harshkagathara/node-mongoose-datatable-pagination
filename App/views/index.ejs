@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Datatable Pagination</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" />
+      <script type="text/javascript" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+   </head>
+   <body>
+      <div class="container">
+         <table id="example" class="table table-bordered table-hover" style="width:100%">
+            <thead>
+               <tr>
+                  <th>Account Name</th>
+                  <th>locality</th>
+                  <th>Location Name</th>
+                  <th>Map Url</th>
+               </tr>
+            </thead>
+            <tfoot>
+               <tr>
+                  <th>Account Name</th>
+                  <th>locality</th>
+                  <th>Location Name</th>
+                  <th>Map Url</th>
+               </tr>
+            </tfoot>
+         </table>
+      </div>
+   </body>
+   <script>
+      $(document).ready(function () {
+          $('#example').DataTable({
+              "paging": true,
+              "bLengthChange": false,
+              "pageLength": 5,
+              "searching": true,
+              "serverSide": true,
+              "oLanguage": {
+      
+                  "sInfoFiltered": " ",
+                  "sInfo": "Showing _START_ to _END_ of total _TOTAL_ ",
+                  "sInfoEmpty": "Aucun résultat trouvé",
+                  "sZeroRecords": "Aucun résultat ne correspond à votre recherche",
+                  "oPaginate": {
+                      "sNext": "Next",
+                      "sPrevious": "Previous"
+                  }, 
+                  "sSearch": "Search"
+              },//"deferLoading": 0,
+              "ordering": false,
+              "sAjaxSource": 'http://127.0.0.1:3000/poi/data',
+              "fnServerData": function (sSource, aoData, fnCallback) {
+                  $.ajax({
+                      "dataType": 'json',
+                      "type": "post",
+                      "url": sSource,
+                      "data": aoData,
+                      "success": function (data) {
+                          fnCallback(data);
+      
+                      }
+                  });
+              },
+              "aoColumnDefs": [],
+              "aoColumns": [
+      
+                  { mData: 'locationName', 'data': 'locationName' },
+                  { mData: 'telephone', 'data': 'telephone' },
+                  { mData: 'locality', 'data': 'locality' },
+                  { mData: 'mapUrl', 'data': 'mapUrl' },
+      
+      
+              ],
+      
+          });
+      })
+   </script>
+</html>
